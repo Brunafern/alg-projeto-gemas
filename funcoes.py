@@ -37,3 +37,16 @@ def COMPLETAR_TABULEIRO(t,cor):
             r = random.randrange(0, cor) # Gera um indice aleatório para a lista cores
             t[l][c] = cores[r]
     return t
+def TROCAR_POSICAO(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
+    gema_1 = tabu[num_linha_1][num_coluna_1]
+    gema_2 = tabu[num_linha_2][num_coluna_2]
+    tabu[num_linha_1][num_coluna_1] = gema_2
+    tabu[num_linha_2][num_coluna_2] = gema_1
+    return tabu
+def ELIMINAR_GEMAS(tabu):
+    # eliminar linhas
+    linha = []
+    for l in range(len(tabu)):
+        for c in range(len(tabu[l])):
+            pass
+
