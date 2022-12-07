@@ -1,5 +1,28 @@
 import random
 
+def VALIDAR_Linhas_Colunas(num_linhas_colunas):
+    while len(num_linhas_colunas) == 0:
+        print('Entrada Inválida')
+        num_linhas_colunas = input('Números de linhas e colunas: ')
+
+    linha, coluna =  num_linhas_colunas.split(" ")
+    while linha.isdigit() == False or coluna.isdigit() == False:
+        print('Insira apenas números')
+        linha, coluna =  input('Números de linhas e colunas: ').split(" ")
+    linha = int(linha)
+    coluna = int(coluna)
+    while linha > 10 or coluna > 10 :
+        print("Insira um numero de 1 a 10")
+        linha, coluna =  input('Números de linhas e colunas: ').split(" ")
+
+    return linha, coluna
+def Validar_Cores(quant_cores):
+    while len(quant_cores) == 0:
+        print('Entrada Inválida')
+        quant_cores = input('Números de Cores: ')
+    quant_cores = int(quant_cores)
+    return(quant_cores)
+
 def CRIAR_TABULEIRO(num_linhas,num_colunas):
     tabuleiro = []
     for l in range(0,num_linhas):

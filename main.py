@@ -1,8 +1,9 @@
 from funcoes import *
 
-linha,coluna = map(int,input('Números de linha e coluna: ').split())
-
-quant_cores = int(input('Quantidades de cores: '))
+linha_coluna = input('Números de linha e coluna: ')
+linha, coluna = VALIDAR_Linhas_Colunas(linha_coluna)
+quant_cores = input('Quantidades de cores: ')
+quant_cores = Validar_Cores(quant_cores)
 
 tabuleiro = CRIAR_TABULEIRO(linha,coluna)
 COMPLETAR_TABULEIRO(tabuleiro,quant_cores)
@@ -15,4 +16,5 @@ while True:
     TROCAR_POSICAO(t_l_1, t_c_1, t_l_2, t_c_2, tabuleiro)
     ELIMINAR_GEMAS(tabuleiro)
     PRINTAR_TABULEIRO(tabuleiro, coluna)
+
 
