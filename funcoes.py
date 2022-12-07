@@ -45,8 +45,33 @@ def TROCAR_POSICAO(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
     return tabu
 def ELIMINAR_GEMAS(tabu):
     # eliminar linhas
-    linha = []
     for l in range(len(tabu)):
+        linha = []
+        indice_r = []
+        indice_l = 0
         for c in range(len(tabu[l])):
-            pass
+            if c == 0:
+                linha.append(tabu[l][c])
+                indice_r.append([l,c])
+            elif tabu[l][c] == linha[indice_l]:
+                  linha.append(tabu[l][c])
+                  indice_r.append([l,c])
+                  indice_l += 1
+            if tabu[l][c] != linha[indice_l] and len(linha) < 3:
+                  linha = []
+                  linha.append(tabu[l][c])
+                  indice_r = []
+                  indice_r.append([l,c])
+                  indice_l = 0
+
+            if c == 3 and len(indice_r) >= 3:
+                indice_remove = sorted(indice_r)
+                for L in range(len(indice_remove)):
+                    tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
+            elif len(indice_r) >= 3 and tabu[l][c+1] != linha[indice_l]:
+                indice_remove = sorted(indice_r)
+                for L in range(len(indice_remove)):
+                    tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
+
+    return tabu
 
