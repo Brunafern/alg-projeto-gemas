@@ -1,26 +1,35 @@
 import random
 
-def VALIDAR_Linhas_Colunas(num_linhas_colunas):
-    while len(num_linhas_colunas) == 0:
+def VALIDAR_Linhas_Colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
+    while len(num_linhas_colunas) != 3:
         print('Entrada Inválida')
         num_linhas_colunas = input('Números de linhas e colunas: ')
 
     linha, coluna =  num_linhas_colunas.split(" ")
     while linha.isdigit() == False or coluna.isdigit() == False:
         print('Insira apenas números')
-        linha, coluna =  input('Números de linhas e colunas: ').split(" ")
+        linha, coluna = input('Números de linhas e colunas: ').split(" ")
     linha = int(linha)
     coluna = int(coluna)
-    while linha > 10 or coluna > 10 :
+    while (linha > 10 or coluna > 10) or (linha == 0 or coluna == 0):
         print("Insira um numero de 1 a 10")
         linha, coluna =  input('Números de linhas e colunas: ').split(" ")
 
     return linha, coluna
 def Validar_Cores(quant_cores):
-    while len(quant_cores) == 0:
-        print('Entrada Inválida')
-        quant_cores = input('Números de Cores: ')
-    quant_cores = int(quant_cores)
+    while  True:
+        if quant_cores.isdigit() == False:
+           print('Entrada Inválida')
+           quant_cores = input('Números de Cores: ')
+           continue
+        else:
+            quant_cores = int(quant_cores)
+            if quant_cores < 0 or quant_cores > 25:
+                print('Entrada Inválida')
+                quant_cores = input('Números de Cores: ')
+                continue
+            else:
+                  break
     return(quant_cores)
 
 def CRIAR_TABULEIRO(num_linhas,num_colunas):
