@@ -1,4 +1,15 @@
 import random
+from constantes import  *
+
+MAIOR_QUANTIDADE_CORES_POSSIVEL = 27
+
+'''try:
+    n = int(input())
+except ValueError:
+    print("digite um numero!!!!!!!!!!!!")'''
+
+
+
 
 def VALIDAR_Linhas_Colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
     while len(num_linhas_colunas) != 3:
@@ -11,7 +22,7 @@ def VALIDAR_Linhas_Colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
         linha, coluna = input('Números de linhas e colunas: ').split(" ")
     linha = int(linha)
     coluna = int(coluna)
-    while (linha > 10 or coluna > 10) or (linha == 0 or coluna == 0):
+    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha == 0 or coluna == 0):
         print("Insira um numero de 1 a 10")
         linha, coluna =  input('Números de linhas e colunas: ').split(" ")
 
@@ -24,7 +35,7 @@ def Validar_Cores(quant_cores):
            continue
         else:
             quant_cores = int(quant_cores)
-            if quant_cores < 0 or quant_cores > 25:
+            if quant_cores < 0 or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
                 print('Entrada Inválida')
                 quant_cores = input('Números de Cores: ')
                 continue
@@ -75,7 +86,7 @@ def TROCAR_POSICAO(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
     tabu[num_linha_1][num_coluna_1] = gema_2
     tabu[num_linha_2][num_coluna_2] = gema_1
     return tabu
-def ELIMINAR_GEMAS(tabu):
+def ELIMINAR_GEMAS_LINNHA(tabu):
     # eliminar linhas
     for l in range(len(tabu)):
         linha = []
@@ -96,7 +107,7 @@ def ELIMINAR_GEMAS(tabu):
                   indice_r.append([l,c])
                   indice_l = 0
 
-            if c == 3 and len(indice_r) >= 3:
+            if c == len(tabu) -1 and len(indice_r) >= 3:
                 indice_remove = sorted(indice_r)
                 for L in range(len(indice_remove)):
                     tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
@@ -107,3 +118,33 @@ def ELIMINAR_GEMAS(tabu):
 
     return tabu
 
+def ELIMINAR_GEMAS_COLUNOS(tabu):
+    for l in range(len(tabu)):
+        linha = []
+        indice_r = []
+        indice_c = 0
+        for c in range(len(tabu[l])):
+            if c == 0:
+                linha.append(tabu[c][l])
+                indice_r.append([c,l])
+            elif tabu[c][l] == linha[indice_c]:
+                  linha.append(tabu[c][l])
+                  indice_r.append([c,l])
+                  indice_c += 1
+            if tabu[c][l] != linha[indice_c] and len(linha) < 3:
+                  linha = []
+                  linha.append(tabu[c][l])
+                  indice_r = []
+                  indice_r.append([c,l])
+                  indice_c = 0
+
+            if c == len(tabu) -1 and len(indice_r) >= 3:
+                indice_remove = sorted(indice_r)
+                for L in range(len(indice_remove)):
+                    tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
+            elif len(indice_r) >= 3 and tabu[c+1][l] != linha[indice_c]:
+                indice_remove = sorted(indice_r)
+                for L in range(len(indice_remove)):
+                    tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
+
+    return tabu
