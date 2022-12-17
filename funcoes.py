@@ -1,7 +1,5 @@
 import random
-from constantes import  *
-
-MAIOR_QUANTIDADE_CORES_POSSIVEL = 27
+from constantes import *
 
 '''try:
     n = int(input())
@@ -11,8 +9,8 @@ except ValueError:
 
 
 
-def VALIDAR_Linhas_Colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
-    while len(num_linhas_colunas) != 3:
+def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
+    while len(num_linhas_colunas) != TAMANHO_ENTRADA:
         print('Entrada Inválida')
         num_linhas_colunas = input('Números de linhas e colunas: ')
 
@@ -27,7 +25,7 @@ def VALIDAR_Linhas_Colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
         linha, coluna =  input('Números de linhas e colunas: ').split(" ")
 
     return linha, coluna
-def Validar_Cores(quant_cores):
+def validar_cores(quant_cores):
     while  True:
         if quant_cores.isdigit() == False:
            print('Entrada Inválida')
@@ -35,7 +33,7 @@ def Validar_Cores(quant_cores):
            continue
         else:
             quant_cores = int(quant_cores)
-            if quant_cores < 0 or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
+            if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
                 print('Entrada Inválida')
                 quant_cores = input('Números de Cores: ')
                 continue
@@ -43,7 +41,7 @@ def Validar_Cores(quant_cores):
                   break
     return(quant_cores)
 
-def CRIAR_TABULEIRO(num_linhas,num_colunas):
+def criar_tabuleiro(num_linhas,num_colunas):
     tabuleiro = []
     for l in range(0,num_linhas):
         linha = []
@@ -52,7 +50,7 @@ def CRIAR_TABULEIRO(num_linhas,num_colunas):
         tabuleiro.append(linha)
     return tabuleiro
 
-def PRINTAR_TABULEIRO(n,coluna):
+def printar_tabuleiro(n,coluna):
     quant_c = ['','','',''] # Ajusta os números superiores
     for i in range(0,coluna):
         quant_c.append(i)
@@ -72,15 +70,13 @@ def PRINTAR_TABULEIRO(n,coluna):
             print('  +'+('--'*coluna)+'-+')
     return n
 
-def COMPLETAR_TABULEIRO(t,cor):
-    cores = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-             'V', 'W', 'X', 'Y', 'Z']
+def completar_tabuleiro(t,cor):
     for l in range(len(t)):
         for c in range(len(t[l])):
             r = random.randrange(0, cor) # Gera um indice aleatório para a lista cores
-            t[l][c] = cores[r]
+            t[l][c] = CORES[r]
     return t
-def TROCAR_POSICAO(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
+def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
     gema_1 = tabu[num_linha_1][num_coluna_1]
     gema_2 = tabu[num_linha_2][num_coluna_2]
     tabu[num_linha_1][num_coluna_1] = gema_2
