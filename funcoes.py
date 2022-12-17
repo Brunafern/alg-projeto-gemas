@@ -1,7 +1,16 @@
 import random
+from constantes import *
 
-def VALIDAR_Linhas_Colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
-    while len(num_linhas_colunas) != 3:
+'''try:
+    n = int(input())
+except ValueError:
+    print("digite um numero!!!!!!!!!!!!")'''
+
+
+
+
+def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
+    while len(num_linhas_colunas) != TAMANHO_ENTRADA:
         print('Entrada Inválida')
         num_linhas_colunas = input('Números de linhas e colunas: ')
 
@@ -11,12 +20,12 @@ def VALIDAR_Linhas_Colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
         linha, coluna = input('Números de linhas e colunas: ').split(" ")
     linha = int(linha)
     coluna = int(coluna)
-    while (linha > 10 or coluna > 10) or (linha == 0 or coluna == 0):
+    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha == 0 or coluna == 0):
         print("Insira um numero de 1 a 10")
         linha, coluna =  input('Números de linhas e colunas: ').split(" ")
 
     return linha, coluna
-def Validar_Cores(quant_cores):
+def validar_cores(quant_cores):
     while  True:
         if quant_cores.isdigit() == False:
            print('Entrada Inválida')
@@ -24,7 +33,7 @@ def Validar_Cores(quant_cores):
            continue
         else:
             quant_cores = int(quant_cores)
-            if quant_cores < 0 or quant_cores > 25:
+            if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
                 print('Entrada Inválida')
                 quant_cores = input('Números de Cores: ')
                 continue
@@ -32,7 +41,7 @@ def Validar_Cores(quant_cores):
                   break
     return(quant_cores)
 
-def CRIAR_TABULEIRO(num_linhas,num_colunas):
+def criar_tabuleiro(num_linhas,num_colunas):
     tabuleiro = []
     for l in range(0,num_linhas):
         linha = []
@@ -41,7 +50,7 @@ def CRIAR_TABULEIRO(num_linhas,num_colunas):
         tabuleiro.append(linha)
     return tabuleiro
 
-def PRINTAR_TABULEIRO(n,coluna):
+def printar_tabuleiro(n,coluna):
     quant_c = ['','','',''] # Ajusta os números superiores
     for i in range(0,coluna):
         quant_c.append(i)
@@ -61,22 +70,20 @@ def PRINTAR_TABULEIRO(n,coluna):
             print('  +'+('--'*coluna)+'-+')
     return n
 
-def COMPLETAR_TABULEIRO(t,cor):
-    cores = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-             'V', 'W', 'X', 'Y', 'Z']
+def completar_tabuleiro(t,cor):
     for l in range(len(t)):
         for c in range(len(t[l])):
             r = random.randrange(0, cor) # Gera um indice aleatório para a lista cores
-            t[l][c] = cores[r]
+            t[l][c] = CORES[r]
     return t
-def TROCAR_POSICAO(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
+def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
     gema_1 = tabu[num_linha_1][num_coluna_1]
     gema_2 = tabu[num_linha_2][num_coluna_2]
     tabu[num_linha_1][num_coluna_1] = gema_2
     tabu[num_linha_2][num_coluna_2] = gema_1
     return tabu
-def ELIMINAR_GEMAS(tabu):
-    # eliminar linhas
+def identificar_gemas_linha(tabu):
+    indice_remove_l = []
     for l in range(len(tabu)):
         linha = []
         indice_r = []
@@ -89,14 +96,57 @@ def ELIMINAR_GEMAS(tabu):
                   linha.append(tabu[l][c])
                   indice_r.append([l,c])
                   indice_l += 1
-            if tabu[l][c] != linha[indice_l] and len(linha) < 3:
+            if tabu[l][c] != linha[indice_l] and len(linha) < QUANT_GEMAS_MINIMA:
                   linha = []
                   linha.append(tabu[l][c])
                   indice_r = []
                   indice_r.append([l,c])
                   indice_l = 0
 
-            if c == len(tabu) -1 and len(indice_r) >= 3:
+            if c == len(tabu) -1 and len(indice_r) >= QUANT_GEMAS_MINIMA:
+                indice_remove_l += indice_r
+            elif len(indice_r) >= QUANT_GEMAS_MINIMA and tabu[l][c+1] != linha[indice_l]:
+                indice_remove_l += indice_r
+
+    return indice_remove_l
+
+def identificar_gemas_colunas(tabu):
+    indice_remove_c = []
+    for l in range(len(tabu)):
+        linha = []
+        indice_r = []
+        indice_c = 0
+        for c in range(len(tabu[l])):
+            if c == 0:
+                linha.append(tabu[c][l])
+                indice_r.append([c,l])
+            elif tabu[c][l] == linha[indice_c]:
+                  linha.append(tabu[c][l])
+                  indice_r.append([c,l])
+                  indice_c += 1
+            if tabu[c][l] != linha[indice_c] and len(linha) < QUANT_GEMAS_MINIMA:
+                  linha = []
+                  linha.append(tabu[c][l])
+                  indice_r = []
+                  indice_r.append([c,l])
+                  indice_c = 0
+
+            if c == len(tabu) -1 and len(indice_r) >= QUANT_GEMAS_MINIMA:
+                indice_remove_c  += indice_r
+            elif len(indice_r) >= QUANT_GEMAS_MINIMA and tabu[c+1][l] != linha[indice_c]:
+                indice_remove_c += indice_r
+
+    return indice_remove_c
+
+def eliminar_gemas(l,c,tabu):
+    for i in range(len(l)):
+        tabu[l[i][0]][l[i][1]] = VAZIO
+    for j in range(len(c)):
+        tabu[c[j][0]][c[j][1]] = VAZIO
+    return tabu
+
+'''
+ if c == len(tabu) -1 and len(indice_r) >= 3:
                 indice_remove = sorted(indice_r)
                 for L in range(len(indice_remove)):
                     tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
@@ -104,6 +154,4 @@ def ELIMINAR_GEMAS(tabu):
                 indice_remove = sorted(indice_r)
                 for L in range(len(indice_remove)):
                     tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
-
-    return tabu
-
+'''
