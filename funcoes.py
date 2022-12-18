@@ -145,13 +145,28 @@ def eliminar_gemas(l,c,tabu):
         tabu[c[j][0]][c[j][1]] = VAZIO
     return tabu
 
-'''
- if c == len(tabu) -1 and len(indice_r) >= 3:
-                indice_remove = sorted(indice_r)
-                for L in range(len(indice_remove)):
-                    tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
-            elif len(indice_r) >= 3 and tabu[l][c+1] != linha[indice_l]:
-                indice_remove = sorted(indice_r)
-                for L in range(len(indice_remove)):
-                    tabu[indice_remove[L][0]][indice_remove[L][1]] = ' '
-'''
+def deslocar_gema(tabu):
+
+    for l in range(len(tabu)):
+        indice_vazio = []
+        indice_gema = []
+        for c in range(len(tabu[l])):
+            if tabu[c][l] == VAZIO:
+                indice_vazio.append([c,l])
+            if tabu[c][l] != VAZIO:
+                 indice_gema.append([c,l])
+            if tabu[c][l] == VAZIO and tabu[c+1][l] != VAZIO:
+                tamanho_lista_vazio = len(indice_vazio)
+                tamanho_lista_gema = len(indice_gema)
+                for i in range(tamanho_lista_vazio-1,-1,-1):
+                    cont = 0
+                    for j in range(tamanho_lista_gema-1,-1,-1):
+                         tabu[indice_vazio[i][0]-cont][indice_vazio[i][1]] = tabu[indice_gema[j][0]][indice_gema[j][1]]
+                         cont += 1
+                         tabu[indice_vazio[i][0] - cont][indice_vazio[i][1]] = VAZIO
+                indice_vazio = []
+                indice_gema = []
+    return tabu
+
+
+

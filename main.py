@@ -23,3 +23,5 @@ while True:
     remove_coluna = identificar_gemas_linha(tabuleiro)
     eliminar_gemas(remove_linha, remove_coluna, tabuleiro)
     printar_tabuleiro(tabuleiro, coluna)
+    #deslocar_gema(tabuleiro)
+    printar_tabuleiro(tabuleiro,coluna)
