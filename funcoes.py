@@ -112,6 +112,7 @@ def identificar_gemas_linha(tabu):
                 indice_remove_l += indice_r
             elif len(indice_r) >= QUANT_GEMAS_MINIMA and tabu[l][c+1] != linha[indice_l]:
                 indice_remove_l += indice_r
+                indice_r = []
 
     return indice_remove_l
 
@@ -140,21 +141,23 @@ def identificar_gemas_colunas(tabu):
                 indice_remove_c  += indice_r
             elif len(indice_r) >= QUANT_GEMAS_MINIMA and tabu[c+1][l] != linha[indice_c]:
                 indice_remove_c += indice_r
+                indice_r = []
 
     return indice_remove_c
 
-def eliminar_gemas(l,c,tabu,p_l,p_c):
+def eliminar_gemas(l,c,tabu):
     for i in range(len(l)):
         tabu[l[i][0]][l[i][1]] = VAZIO
     for j in range(len(c)):
         tabu[c[j][0]][c[j][1]] = VAZIO
+    '''
     if len(p_l) > 0:
         for i in range(len(l)):
             tabu[p_l[i][0]][p_l[i][1]] = VAZIO
     if len(p_c) > 0:
         for j in range(len(c)):
             tabu[p_c[j][0]][p_c[j][1]] = VAZIO
-
+    '''
     return tabu
 
 def deslocar_gema(tabu):
@@ -164,40 +167,32 @@ def deslocar_gema(tabu):
         indice_gema = []
         for c in range(len(tabu[l])):
             if tabu[c][l] == VAZIO:
-                indice_vazio.append([c,l])
+                indice_vazio.append([c, l])
             if tabu[c][l] != VAZIO:
-                 indice_gema.append([c,l])
-            if tabu[c][l] == VAZIO and c == len(tabu)-1:
+                indice_gema.append([c, l])
+            if (tabu[c][l] == VAZIO and c == len(tabu) - 1) or (tabu[c][l] == VAZIO and tabu[c + 1][l] != VAZIO):
                 tamanho_lista_vazio = len(indice_vazio)
                 tamanho_lista_gema = len(indice_gema)
                 for i in range(tamanho_lista_vazio - 1, -1, -1):
                     cont = 0
-                    if i == tamanho_lista_vazio-2:
+                    if i == tamanho_lista_vazio - 2:
                         break
+
                     for j in range(tamanho_lista_gema - 1, -1, -1):
                         tabu[indice_vazio[i][0] - cont][indice_vazio[i][1]] = tabu[indice_gema[j][0]][indice_gema[j][1]]
                         cont += 1
                         tabu[indice_gema[j][0]][indice_gema[j][1]] = VAZIO
-                        #printar_tabuleiro(tabu, 7)
-                indice_vazio = []
-                indice_gema = []
-            elif tabu[c][l] == VAZIO and tabu[c+1][l] != VAZIO:
-                tamanho_lista_vazio = len(indice_vazio)
-                tamanho_lista_gema = len(indice_gema)
-                for i in range(tamanho_lista_vazio - 1, -1, -1):
-                    cont = 0
-                    if i == tamanho_lista_vazio-2:
-                        break
-                    for j in range(tamanho_lista_gema - 1, -1, -1):
-                        tabu[indice_vazio[i][0] - cont][indice_vazio[i][1]] = tabu[indice_gema[j][0]][indice_gema[j][1]]
-                        cont += 1
-                        tabu[indice_gema[j][0]][indice_gema[j][1]] = VAZIO
-                        #printar_tabuleiro(tabu, 7)
-                        indice_gema.append([indice_vazio[i][0],indice_vazio[i][1]]) #armazena a ultima gema
-                indice_vazio = []
+                    if tabu[c][l] == VAZIO and c == len(tabu) - 1: # impedir o erro do out of range na próxima condição
+                       continue
+                    elif tabu[c-cont][l] == VAZIO and tabu[(c + 1)-cont][l] != VAZIO:
+                             indice_gema.append([indice_vazio[i][0], indice_vazio[i][1]])
+                    indice_vazio = []
+                    if (tabu[c-cont][l] == VAZIO and c == len(tabu) - 1):
+                            indice_gema = []
 
     return tabu
 
+'''
 def power_ups(linha,coluna,tabu):
 
     indice_linha = []
@@ -210,3 +205,4 @@ def power_ups(linha,coluna,tabu):
           indice_coluna.append([i,coluna[0][1]])
 
     return indice_linha,indice_coluna
+'''
