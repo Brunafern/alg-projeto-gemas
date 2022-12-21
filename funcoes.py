@@ -145,19 +145,42 @@ def identificar_gemas_colunas(tabu):
 
     return indice_remove_c
 
-def eliminar_gemas(l,c,tabu):
+def power_ups(linha,coluna,tabu):
+    p_5 = '0'
+    indice_linha = []
+    indice_coluna = []
+    if len(linha) == 4:
+        for i in range(len(tabu)):
+          indice_linha.append([linha[0][0],i])
+    if len(coluna) == 4:
+        for i in range(len(tabu)):
+          indice_coluna.append([i,coluna[0][1]])
+    if len(linha) == 5:
+         p_5 = tabu[linha[0][0]][linha[0][1]]
+    if len(coluna) == 5:
+         p_5 = tabu[coluna[0][0]][coluna[0][1]]
+
+    return indice_linha,indice_coluna,p_5
+
+def eliminar_gemas(l,c,tabu,p_l,p_c,p_5):
     for i in range(len(l)):
         tabu[l[i][0]][l[i][1]] = VAZIO
     for j in range(len(c)):
         tabu[c[j][0]][c[j][1]] = VAZIO
-    '''
+
     if len(p_l) > 0:
-        for i in range(len(l)):
+        for i in range(len(p_l)):
             tabu[p_l[i][0]][p_l[i][1]] = VAZIO
     if len(p_c) > 0:
-        for j in range(len(c)):
+        for j in range(len(p_c)):
             tabu[p_c[j][0]][p_c[j][1]] = VAZIO
-    '''
+    if p_5.isdigit() == False:
+        for l in range(len(tabu)):
+            for c in range(len(tabu[l])):
+                if tabu[l][c] == p_5:
+                    tabu[l][c] = VAZIO
+
+
     return tabu
 
 def deslocar_gema(tabu):
@@ -191,18 +214,3 @@ def deslocar_gema(tabu):
                             indice_gema = []
 
     return tabu
-
-'''
-def power_ups(linha,coluna,tabu):
-
-    indice_linha = []
-    indice_coluna = []
-    if len(linha) == 4:
-        for i in range(len(tabu)):
-          indice_linha.append([linha[0][0],i])
-    if len(coluna) == 4:
-        for i in range(len(tabu)):
-          indice_coluna.append([i,coluna[0][1]])
-
-    return indice_linha,indice_coluna
-'''
