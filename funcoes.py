@@ -1,6 +1,8 @@
 import random
 from constantes import *
 
+
+
 '''try:
     n = int(input())
 except ValueError:
@@ -47,7 +49,7 @@ def criar_tabuleiro(num_linhas,num_colunas):
     for l in range(0,num_linhas):
         linha = []
         for c in range(0,num_colunas):
-            linha.append(' ')
+            linha.append(VAZIO)
         tabuleiro.append(linha)
 
     return tabuleiro
@@ -89,7 +91,7 @@ def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
         return tabu
 
     else:
-        print('Voce não pode fazer esse movimento')
+        print(NAO_FAZER_ESSE_MOVIMENTO)
         return False
 
 def identificar_gemas_linha(tabu):
@@ -158,20 +160,21 @@ def power_ups(linha,coluna,tabu):
     p_5 = '0'
     indice_linha = []
     indice_coluna = []
-    if len(linha) == 4:
+    if len(linha) == POWER_UP_4:
         for i in range(len(tabu)):
           indice_linha.append([linha[0][0],i])
-    if len(coluna) == 4:
+    if len(coluna) == POWER_UP_4:
         for i in range(len(tabu)):
           indice_coluna.append([i,coluna[0][1]])
-    if len(linha) == 5:
+    if len(linha) == POWER_UP_5:
          p_5 = tabu[linha[0][0]][linha[0][1]]
-    if len(coluna) == 5:
+    if len(coluna) == POWER_UP_5:
          p_5 = tabu[coluna[0][0]][coluna[0][1]]
 
     return indice_linha,indice_coluna,p_5
 
-def eliminar_gemas(l,c,tabu,p_l,p_c,p_5):
+def eliminar_gemas(l,c,tabu,p_l,p_c,p_5, pontos):
+    pontos += len(c) + len(l)
     for i in range(len(l)):
         tabu[l[i][0]][l[i][1]] = VAZIO
     for j in range(len(c)):
@@ -188,9 +191,7 @@ def eliminar_gemas(l,c,tabu,p_l,p_c,p_5):
             for c in range(len(tabu[l])):
                 if tabu[l][c] == p_5:
                     tabu[l][c] = VAZIO
-
-
-    return tabu
+    return tabu, pontos
 
 def deslocar_gema(tabu):
 
@@ -225,28 +226,28 @@ def deslocar_gema(tabu):
     return tabu
 
 def dicas(tl1, tc1 ,tabu):
-   tem = ''
-   if tc1 == 100 and tl1 == 100:
+   tem = VAZIO_SEM_ESPACO
+   if tc1 == NUMERO_DICA and tl1 == NUMERO_DICA:
        for i in range(len(tabu)):
-           if tem == 'sim':
+           if tem == SIM:
                break
            for j in range(len(tabu[i])):
                duas_pessas = []
                peca = []
-               if j != 6:
+               if j != MARGEM_TABULEIRO:
                        if (tabu[i][j]) == (tabu[i][j+1]):
                            duas_pessas.append([i,j])
                            duas_pessas.append([i, j+1])
                            peca.append(tabu[i][j])
-                           if  j < 4 and (tabu[i][j+3]) in peca:
-                               print('Ainda há jogadas disponiveis nas casas', duas_pessas)
-                               tem += 'sim'
+                           if  j < MARGEM_PECA_FRENTE and (tabu[i][j + 3]) in peca:
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas)
+                               tem += SIM
                                break
-                           elif j >= 2 and (tabu[i][j-2]) in peca:
-                               print('Ainda há jogadas disponiveis nas casas', duas_pessas)
-                               tem += 'sim'
+                           elif j >= MARGEM_PECA_ATRAS and (tabu[i][j - 2]) in peca:
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas)
+                               tem += SIM
                                break
        else:
-           print('Não há dicas disponiveis')
-           tem += 'sim'
+           print(NAO_HA_DISPONIVEIS)
+           tem += SIM
    return tem
