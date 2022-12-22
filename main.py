@@ -1,14 +1,13 @@
 from funcoes import *
+
+
 pontos = 0
 
 inicar()
 linha_coluna = input('Números de linha e coluna: ')
-
 linha, coluna = validar_linhas_colunas(linha_coluna)
 quant_cores = input('Quantidades de cores: ')
-
 quant_cores = validar_cores(quant_cores)
-
 tabuleiro = criar_tabuleiro(linha,coluna)
 completar_tabuleiro(tabuleiro,quant_cores)
 printar_tabuleiro(tabuleiro,coluna)
@@ -27,7 +26,7 @@ while True:
     tem = dicas(t_l_1, t_c_1, tabuleiro)
     if tem == SIM:
         t_l_1, t_c_1 = map(int, input('Posição um: ').split())
-    elif tem == 'nao':
+    elif tem == NAO:
         break
     t_l_2, t_c_2 = map(int, input('Posição dois: ').split())
     trocar_posicao(t_l_1, t_c_1, t_l_2, t_c_2, tabuleiro)
