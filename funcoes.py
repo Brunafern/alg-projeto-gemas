@@ -83,10 +83,15 @@ def completar_tabuleiro(t,cor):
 def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
     gema_1 = tabu[num_linha_1][num_coluna_1]
     gema_2 = tabu[num_linha_2][num_coluna_2]
-    tabu[num_linha_1][num_coluna_1] = gema_2
-    tabu[num_linha_2][num_coluna_2] = gema_1
+    if (num_coluna_2 == num_coluna_1 and num_linha_2 == num_linha_1 + 1 or  num_linha_2 == num_linha_1 -1) or (num_linha_2 == num_linha_1 and num_coluna_2 == num_coluna_1 + 1 or  num_coluna_2 == num_coluna_1 -1):
+        tabu[num_linha_1][num_coluna_1] = gema_2
+        tabu[num_linha_2][num_coluna_2] = gema_1
+        return tabu
 
-    return tabu
+    else:
+        print('Voce não pode fazer esse movimento')
+        return False
+
 def identificar_gemas_linha(tabu):
     indice_remove_l = []
     for l in range(len(tabu)):
@@ -110,11 +115,15 @@ def identificar_gemas_linha(tabu):
 
             if c == len(tabu) -1 and len(indice_r) >= QUANT_GEMAS_MINIMA:
                 indice_remove_l += indice_r
+
             elif len(indice_r) >= QUANT_GEMAS_MINIMA and tabu[l][c+1] != linha[indice_l]:
                 indice_remove_l += indice_r
                 indice_r = []
 
+
     return indice_remove_l
+
+
 
 def identificar_gemas_colunas(tabu):
     indice_remove_c = []
@@ -139,10 +148,10 @@ def identificar_gemas_colunas(tabu):
 
             if c == len(tabu) -1 and len(indice_r) >= QUANT_GEMAS_MINIMA:
                 indice_remove_c  += indice_r
+
             elif len(indice_r) >= QUANT_GEMAS_MINIMA and tabu[c+1][l] != linha[indice_c]:
                 indice_remove_c += indice_r
                 indice_r = []
-
     return indice_remove_c
 
 def power_ups(linha,coluna,tabu):
@@ -214,3 +223,30 @@ def deslocar_gema(tabu):
                             indice_gema = []
 
     return tabu
+
+def dicas(tl1, tc1 ,tabu):
+   tem = ''
+   if tc1 == 100 and tl1 == 100:
+       for i in range(len(tabu)):
+           if tem == 'sim':
+               break
+           for j in range(len(tabu[i])):
+               duas_pessas = []
+               peca = []
+               if j != 6:
+                       if (tabu[i][j]) == (tabu[i][j+1]):
+                           duas_pessas.append([i,j])
+                           duas_pessas.append([i, j+1])
+                           peca.append(tabu[i][j])
+                           if  j < 4 and (tabu[i][j+3]) in peca:
+                               print('Ainda há jogadas disponiveis nas casas', duas_pessas)
+                               tem += 'sim'
+                               break
+                           elif j >= 2 and (tabu[i][j-2]) in peca:
+                               print('Ainda há jogadas disponiveis nas casas', duas_pessas)
+                               tem += 'sim'
+                               break
+       else:
+           print('Não há dicas disponiveis')
+           tem += 'sim'
+   return tem
