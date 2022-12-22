@@ -1,13 +1,14 @@
 from funcoes import *
 pontos = 0
 
-#linha_coluna = input('Números de linha e coluna: ')
-linha_coluna = '7 7'
+inicar()
+linha_coluna = input('Números de linha e coluna: ')
+
 linha, coluna = validar_linhas_colunas(linha_coluna)
-#quant_cores = input('Quantidades de cores: ')
-quant_cores = '7'
+quant_cores = input('Quantidades de cores: ')
+
 quant_cores = validar_cores(quant_cores)
-print('Bem vindo ao jogo Gemas!''\n''Para obter uma dica, digite 100 100' '\n')
+
 tabuleiro = criar_tabuleiro(linha,coluna)
 completar_tabuleiro(tabuleiro,quant_cores)
 printar_tabuleiro(tabuleiro,coluna)
@@ -26,6 +27,8 @@ while True:
     tem = dicas(t_l_1, t_c_1, tabuleiro)
     if tem == SIM:
         t_l_1, t_c_1 = map(int, input('Posição um: ').split())
+    elif tem == 'nao':
+        break
     t_l_2, t_c_2 = map(int, input('Posição dois: ').split())
     trocar_posicao(t_l_1, t_c_1, t_l_2, t_c_2, tabuleiro)
     remove_coluna = identificar_gemas_colunas(tabuleiro)
@@ -37,3 +40,4 @@ while True:
     completar_tabuleiro(tabuleiro,quant_cores)
     printar_tabuleiro(tabuleiro,coluna)
     print('Pontos:', pontos)
+print('Voce fez', pontos,'pontos')

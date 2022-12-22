@@ -1,42 +1,35 @@
 import random
 from constantes import *
 
-
-
-'''try:
-    n = int(input())
-except ValueError:
-    print("digite um numero!!!!!!!!!!!!")'''
-
-
-
-
 def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
     while len(num_linhas_colunas) != TAMANHO_ENTRADA:
         print('Entrada Inválida')
         num_linhas_colunas = input('Números de linhas e colunas: ')
 
-    linha, coluna =  num_linhas_colunas.split(" ")
+    linha = num_linhas_colunas
+    coluna = num_linhas_colunas
     while linha.isdigit() == False or coluna.isdigit() == False:
         print('Insira apenas números')
-        linha, coluna = input('Números de linhas e colunas: ').split(" ")
-    linha = int(linha)
-    coluna = int(coluna)
-    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha == 0 or coluna == 0):
-        print("Insira um numero de 1 a 10")
-        linha, coluna =  input('Números de linhas e colunas: ').split(" ")
+        num_linhas_colunas = int(input('Números de linhas e colunas: '))
+    linha = int(num_linhas_colunas)
+    coluna = int(num_linhas_colunas)
+    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha < MENOR_ENTRADA_POSIVEL or coluna < MENOR_ENTRADA_POSIVEL):
+        print("Insira um numero de 4 a 10")
+        num_linhas_colunas = int(input('Números de linhas e colunas: '))
+    linha = int(num_linhas_colunas)
+    coluna = int(num_linhas_colunas)
 
     return linha, coluna
 def validar_cores(quant_cores):
     while  True:
         if quant_cores.isdigit() == False:
-           print('Entrada Inválida')
+           print(ENTRADA_INV_LIDA)
            quant_cores = input('Números de Cores: ')
            continue
         else:
             quant_cores = int(quant_cores)
             if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
-                print('Entrada Inválida')
+                print(ENTRADA_INV_LIDA)
                 quant_cores = input('Números de Cores: ')
                 continue
             else:
@@ -53,6 +46,18 @@ def criar_tabuleiro(num_linhas,num_colunas):
         tabuleiro.append(linha)
 
     return tabuleiro
+
+def inicar():
+
+    print('\n'"================================================="'\n'
+    "             Bem-vindo ao Gemas!                 "'\n'
+    "=================================================")
+    print('\n''Para obter uma dica, digite 100 100' '\n')
+
+
+
+
+
 
 def printar_tabuleiro(n,coluna):
     quant_c = ['','','',''] # Ajusta os números superiores
@@ -232,22 +237,60 @@ def dicas(tl1, tc1 ,tabu):
            if tem == SIM:
                break
            for j in range(len(tabu[i])):
-               duas_pessas = []
-               peca = []
-               if j != MARGEM_TABULEIRO:
+               duas_pessas_l = []
+               duas_pessas_c = []
+               peca_l = []
+               peca_c = []
+               if j != len(tabu)-1:
                        if (tabu[i][j]) == (tabu[i][j+1]):
-                           duas_pessas.append([i,j])
-                           duas_pessas.append([i, j+1])
-                           peca.append(tabu[i][j])
-                           if  j < MARGEM_PECA_FRENTE and (tabu[i][j + 3]) in peca:
-                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas)
+                           peca_l .append(tabu[i][j])
+                           if  j < len(tabu)-3 and (tabu[i][j + 3]) in peca_l :
+                               duas_pessas_l.append([i, j+2])
+                               duas_pessas_l.append([i, j +3])
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l, 'l')
                                tem += SIM
                                break
-                           elif j >= MARGEM_PECA_ATRAS and (tabu[i][j - 2]) in peca:
-                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas)
+                           elif j >= MARGEM_PECA_ATRAS and (tabu[i][j - 2]) in peca_l :
+                               duas_pessas_l.append([i, j -1])
+                               duas_pessas_l.append([i, j -2])
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l, 'l')
+                               tem += SIM
+                               break
+
+                       elif (tabu[j][i]) == (tabu[j+1][i]):
+                           peca_c.append(tabu[j][i])
+                           if  j < len(tabu)-3 and (tabu[j+3][i]) in peca_c:
+                               duas_pessas_c.append([j+2,i])
+                               duas_pessas_c.append([j +3, i])
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_c, 'c')
+                               tem += SIM
+                               break
+                           elif j >= MARGEM_PECA_ATRAS and (tabu[j - 2][i]) in peca_c:
+                               duas_pessas_c.append([ j -1, i])
+                               duas_pessas_c.append([j -2, i])
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_c, 'c')
                                tem += SIM
                                break
        else:
            print(NAO_HA_DISPONIVEIS)
            tem += SIM
+           continuar = input("Voce quer continuar?")
+           if continuar == 'nao':
+                tem = 'nao'
    return tem
+
+'''    while len(num_linhas_colunas) != TAMANHO_ENTRADA:
+        print('Entrada Inválida')
+        num_linhas_colunas = input('Números de linhas e colunas: ')
+
+    linha, coluna =  num_linhas_colunas.split(" ")
+    while linha.isdigit() == False or coluna.isdigit() == False:
+        print('Insira apenas números')
+        linha, coluna = input('Números de linhas e colunas: ').split(" ")
+    linha = int(linha)
+    coluna = int(coluna)
+    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha == 0 or coluna == 0):
+        print("Insira um numero de 1 a 10")
+        linha, coluna =  input('Números de linhas e colunas: ').split(" ")
+
+    return linha, coluna'''
