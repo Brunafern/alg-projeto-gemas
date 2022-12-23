@@ -1,6 +1,5 @@
 from funcoes import *
 
-
 posicoes_vezes = 1
 
 pontos = 0
@@ -13,12 +12,17 @@ quant_cores = validar_cores(quant_cores)
 tabuleiro = criar_tabuleiro(linha,coluna)
 completar_tabuleiro(tabuleiro,quant_cores)
 printar_tabuleiro(tabuleiro,coluna)
-remove_coluna = identificar_gemas_colunas(tabuleiro)
-remove_linha = identificar_gemas_linha(tabuleiro)
-p_l,p_c,p_5 = power_ups(remove_linha,remove_coluna,tabuleiro)
-eliminar_gemas(remove_linha,remove_coluna,tabuleiro,p_l,p_c,p_5, pontos)
-deslocar_gema(tabuleiro)
-completar_tabuleiro(tabuleiro,quant_cores)
+while True:
+        remove_coluna = identificar_gemas_colunas(tabuleiro)
+        remove_linha = identificar_gemas_linha(tabuleiro)
+        p_l,p_c,p_5 = power_ups(remove_linha,remove_coluna,tabuleiro)
+        if len(remove_linha) >= QUANT_GEMAS_MINIMA or len(remove_coluna) >= QUANT_GEMAS_MINIMA:
+                eliminar_gemas(remove_linha,remove_coluna,tabuleiro,p_l,p_c,p_5, pontos)
+                deslocar_gema(tabuleiro)
+                completar_tabuleiro(tabuleiro,quant_cores)
+        else:
+            break
+
 printar_tabuleiro(tabuleiro,coluna)
 
 
@@ -35,15 +39,18 @@ while True:
     posicoes2 = input(POSICAO_DOIS)
     t_l_2, t_c_2, p = validar_troca_posicoes(posicoes2, tabuleiro, posicoes_vezes)
     trocar_posicao(t_l_1, t_c_1, t_l_2, t_c_2, tabuleiro)
-    remove_coluna = identificar_gemas_colunas(tabuleiro)
-    remove_linha = identificar_gemas_linha(tabuleiro)
-    p_l, p_c,p_5 = power_ups(remove_linha, remove_coluna, tabuleiro)
-    tabuleiro, pontos = eliminar_gemas(remove_linha, remove_coluna, tabuleiro, p_l, p_c, p_5, pontos)
-    if len(p_l) == len(tabuleiro) or len(p_c) == len(tabuleiro) or p_5.isdigit() == False:
-        printar_tabuleiro(tabuleiro, coluna)
-
-    deslocar_gema(tabuleiro)
-    completar_tabuleiro(tabuleiro,quant_cores)
+    while True:
+        remove_coluna = identificar_gemas_colunas(tabuleiro)
+        remove_linha = identificar_gemas_linha(tabuleiro)
+        p_l, p_c, p_5 = power_ups(remove_linha, remove_coluna, tabuleiro)
+        if len(remove_linha) >= QUANT_GEMAS_MINIMA or len(remove_coluna) >= QUANT_GEMAS_MINIMA:
+            eliminar_gemas(remove_linha, remove_coluna, tabuleiro, p_l, p_c, p_5, pontos)
+            if len(p_l) == len(tabuleiro) or len(p_c) == len(tabuleiro) or p_5.isdigit() == False:
+                printar_tabuleiro(tabuleiro, coluna)
+            deslocar_gema(tabuleiro)
+            completar_tabuleiro(tabuleiro, quant_cores)
+        else:
+            break
     printar_tabuleiro(tabuleiro,coluna)
     print(PONTOS_, pontos)
 print('Voce fez', pontos,'pontos')

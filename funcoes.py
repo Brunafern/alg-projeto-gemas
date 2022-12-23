@@ -3,8 +3,6 @@ from constantes import *
 
 
 
-
-
 def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
     while len(num_linhas_colunas) != TAMANHO_ENTRADA and len(num_linhas_colunas) != TAMANHO_ENTRADA +1:
         print(ENTRADA_INVALIDA )
@@ -19,7 +17,7 @@ def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
         coluna = num_linhas_colunas
     linha = int(num_linhas_colunas)
     coluna = int(num_linhas_colunas)
-    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha < MENOR_ENTRADA_POSIVEL or coluna < MENOR_ENTRADA_POSIVEL):
+    while (linha >= MAIOR_ENTRADA_POSSIVEL or coluna >= MAIOR_ENTRADA_POSSIVEL) or (linha < MENOR_ENTRADA_POSIVEL or coluna < MENOR_ENTRADA_POSIVEL):
         print(ERRO_INTERVALO)
         num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
         linha = int(num_linhas_colunas)
@@ -28,6 +26,8 @@ def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
     coluna = int(num_linhas_colunas)
 
     return linha, coluna
+
+
 def validar_cores(quant_cores):
     while  True:
         if quant_cores.isdigit() == False:
@@ -36,7 +36,7 @@ def validar_cores(quant_cores):
            continue
         else:
             quant_cores = int(quant_cores)
-            if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
+            if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores >= MAIOR_QUANTIDADE_CORES_POSSIVEL:
                 print(ENTRADA_INVALIDA_INSIRA_NUMEROS)
                 quant_cores = input(NUMERO_CORES)
                 continue
@@ -44,6 +44,8 @@ def validar_cores(quant_cores):
                   break
 
     return(quant_cores)
+
+
 def validar_troca_posicoes(posicoes1, tabu, posicoes_vezes ):
     if posicoes1 == ENTRADA_DICA:
         posicoes1.split(VAZIO)
@@ -71,7 +73,6 @@ def validar_troca_posicoes(posicoes1, tabu, posicoes_vezes ):
           return l1, c1, posicoes_vezes
 
 
-
 def criar_tabuleiro(num_linhas,num_colunas):
     '''
 
@@ -88,12 +89,13 @@ def criar_tabuleiro(num_linhas,num_colunas):
 
     return tabuleiro
 
+
 def inicar():
     print(JOGO_INICIO)
 
+
 def printar_tabuleiro(tabu,coluna):
     '''
-
     -param tabu: Matriz (Tabuleiro)
     -param coluna: Número de colunas
     -return: Tabuleiro montado
@@ -118,6 +120,7 @@ def printar_tabuleiro(tabu,coluna):
 
     return tabu
 
+
 def completar_tabuleiro(tabu,cor):
     '''
 
@@ -131,6 +134,8 @@ def completar_tabuleiro(tabu,cor):
                 r = random.randrange(0, cor) # Gera um indice aleatório para a lista cores
                 tabu[l][c] = CORES[r]
     return tabu
+
+
 def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
     '''
 
@@ -151,6 +156,7 @@ def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
     else:
         print(NAO_FAZER_ESSE_MOVIMENTO)
         return False
+
 
 def identificar_gemas_linha(tabu):
     '''
@@ -189,7 +195,6 @@ def identificar_gemas_linha(tabu):
     return indice_remove_l
 
 
-
 def identificar_gemas_colunas(tabu):
     '''
 
@@ -223,6 +228,7 @@ def identificar_gemas_colunas(tabu):
                 indice_remove_c += indice_r
                 indice_r = []
     return indice_remove_c
+
 
 def power_ups(linha,coluna,tabu):
     '''
@@ -279,6 +285,7 @@ def eliminar_gemas(l,c,tabu,p_l,p_c,p_5, pontos):
                 if tabu[l][c] == p_5:
                     tabu[l][c] = VAZIO
     return tabu, pontos
+
 
 def deslocar_gema(tabu):
     '''
