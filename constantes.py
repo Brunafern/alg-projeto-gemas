@@ -37,3 +37,11 @@ POSICAO_DOIS ='Insira a cordenada da linha, espaço, coluna. ex. (x x)\n'\
 
 POSICAO_UM = 'Insira a cordenada da linha, espaço, coluna. ex. (x x)\n' \
              'Posição um: '
+PONTOS_ = 'Pontos:'
+
+SAIR = 'SAIR'
+
+QUANTIDADES_DE_CORES_ = 'Quantidades de cores (4-26): '
+
+INSIRA_COLUNAS_LINHAS = 'Insira um número para linhas e colunas: '
+ENTRADA_DICA = '100 100'

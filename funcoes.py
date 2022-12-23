@@ -1,7 +1,8 @@
 import random
 from constantes import *
 
-INSTRUCOES = 'Tabuleiro de linhas e colunas iguais, os quais podem ser montados de 4x4 a 10x10. ''\n''São escolhidos de 4 a 26 letras, no qual cada letra será uma gema.''\n''s gemas são removidas caso sejam feitas cadeias de 3 ou mais gemas semelhantes.''\n''Para deslocar as gemas é necessário que seja digitado os indices das gemas que iram trocar de posições.''\n''Dicas podem ser obtidas ao digitar 100 100 no momento de escolher a posição da primeira gema a ser deslocada.''\n''Power ups''podem ser feitos ao forma cadeias de 4 ou 5.''\n''O jogo pode ser encerrado ao não ser apresentado nenhuma dica, porém ainda podem existir jogadas possiveis.'
+
+
 
 
 def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
@@ -13,7 +14,9 @@ def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
     coluna = num_linhas_colunas
     while linha.isdigit() == False or coluna.isdigit() == False:
         print(ERRO_INSIRA_NUMEROS)
-        num_linhas_colunas = int(input(NUMERO_LINHASECOLUNAS))
+        num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
+        linha = num_linhas_colunas
+        coluna = num_linhas_colunas
     linha = int(num_linhas_colunas)
     coluna = int(num_linhas_colunas)
     while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha < MENOR_ENTRADA_POSIVEL or coluna < MENOR_ENTRADA_POSIVEL):
@@ -42,27 +45,30 @@ def validar_cores(quant_cores):
 
     return(quant_cores)
 def validar_troca_posicoes(posicoes1, tabu, posicoes_vezes ):
-    if posicoes1 == '100 100' or posicoes1 == '999 999':
-        posicoes1.split(' ')
-        l1 = 100
-        c1 = 100
+    if posicoes1 == ENTRADA_DICA:
+        posicoes1.split(VAZIO)
+        l1 = NUMERO_DICA
+        c1 = NUMERO_DICA
         return l1, c1, posicoes_vezes
     else:
-        while len(posicoes1) != TAMANHO_ENTRADA_POSICOES and VAZIO not in posicoes1:
+        while True:
+          if len(posicoes1) != TAMANHO_ENTRADA_POSICOES or VAZIO not in posicoes1:
             print(ENTRADA_INVALIDA )
             posicoes1 = input(INSIRA_NOVAMENTE_)
-        l1, c1 = posicoes1.split(VAZIO)
-        while l1.isdigit() == False or c1.isdigit() == False:
-            print(ERRO_INSIRA_NUMEROS)
-            l1, c1 = input(INSIRA_NOVAMENTE_).split(VAZIO)
-        l1 = int(l1)
-        c1 = int(c1)
-        while  l1 > len(tabu) or c1 > len(tabu) :
-            print(CORDENADA_FORA_TABLEIRO)
-            l1, c1 = input(INSIRA_NOVAMENTE_).split(VAZIO)
-        posicoes_vezes += 1
-
-        return l1, c1, posicoes_vezes
+            continue
+          l1, c1 = posicoes1.split(VAZIO)
+          if l1.isdigit() == False or c1.isdigit() == False:
+                print(ERRO_INSIRA_NUMEROS)
+                posicoes1 = input(INSIRA_NOVAMENTE_)
+                continue
+          l1 = int(l1)
+          c1 = int(c1)
+          if  l1 > len(tabu) or c1 > len(tabu) :
+              print(CORDENADA_FORA_TABLEIRO)
+              posicoes1 = input(INSIRA_NOVAMENTE_)
+              continue
+          posicoes_vezes += 1
+          return l1, c1, posicoes_vezes
 
 
 
@@ -273,7 +279,6 @@ def eliminar_gemas(l,c,tabu,p_l,p_c,p_5, pontos):
                 if tabu[l][c] == p_5:
                     tabu[l][c] = VAZIO
     return tabu, pontos
-
 
 def deslocar_gema(tabu):
     '''
