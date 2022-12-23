@@ -3,10 +3,9 @@ from constantes import *
 
 
 
-
 def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
-    while len(num_linhas_colunas) != TAMANHO_ENTRADA:
-        print(ENTRADA_INV_LIDA)
+    while len(num_linhas_colunas) != TAMANHO_ENTRADA or len(num_linhas_colunas) > TAMANHO_ENTRADA +1:
+        print(ENTRADA_INVALIDA )
         num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
 
     linha = num_linhas_colunas
@@ -18,7 +17,9 @@ def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
     coluna = int(num_linhas_colunas)
     while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha < MENOR_ENTRADA_POSIVEL or coluna < MENOR_ENTRADA_POSIVEL):
         print(ERRO_INTERVALO)
-        num_linhas_colunas = int(input(NUMERO_LINHASECOLUNAS))
+        num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
+        linha = int(num_linhas_colunas)
+        coluna = int(num_linhas_colunas)
     linha = int(num_linhas_colunas)
     coluna = int(num_linhas_colunas)
 
@@ -26,19 +27,43 @@ def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
 def validar_cores(quant_cores):
     while  True:
         if quant_cores.isdigit() == False:
-           print(ENTRADA_INV_LIDA)
+           print(ENTRADA_INVALIDA )
            quant_cores = input('%s' % NUMERO_CORES)
            continue
         else:
             quant_cores = int(quant_cores)
             if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
-                print(ENTRADA_INV_LIDA)
+                print(ENTRADA_INVALIDA_INSIRA_NUMEROS)
                 quant_cores = input(NUMERO_CORES)
                 continue
             else:
                   break
 
     return(quant_cores)
+def validar_troca_posicoes(posicoes1, tabu, posicoes_vezes ):
+    if posicoes1 == '100 100':
+        posicoes1.split(' ')
+        l1 = 100
+        c1 = 100
+        return l1, c1, posicoes_vezes
+    else:
+        while len(posicoes1) != TAMANHO_ENTRADA_POSICOES and VAZIO not in posicoes1:
+            print(ENTRADA_INVALIDA )
+            posicoes1 = input(INSIRA_NOVAMENTE_)
+        l1, c1 = posicoes1.split(VAZIO)
+        while l1.isdigit() == False or c1.isdigit() == False:
+            print(ERRO_INSIRA_NUMEROS)
+            l1, c1 = input(INSIRA_NOVAMENTE_).split(VAZIO)
+        l1 = int(l1)
+        c1 = int(c1)
+        while (0 > l1 > len(tabu) or 0 > c1 > len(tabu)) :
+            print(CORDENADA_FORA_TABLEIRO)
+            l1, c1 = input(INSIRA_NOVAMENTE_).split(VAZIO)
+        posicoes_vezes += 1
+
+        return l1, c1, posicoes_vezes
+
+
 
 def criar_tabuleiro(num_linhas,num_colunas):
     tabuleiro = []
@@ -77,7 +102,7 @@ def printar_tabuleiro(n,coluna):
 def completar_tabuleiro(t,cor):
     for l in range(len(t)):
         for c in range(len(t[l])):
-            if t[l][c] == ' ':
+            if t[l][c] == VAZIO:
                 r = random.randrange(0, cor) # Gera um indice aleatório para a lista cores
                 t[l][c] = CORES[r]
     return t
@@ -224,9 +249,10 @@ def deslocar_gema(tabu):
 
     return tabu
 
-def dicas(tl1, tc1 ,tabu):
+def dicas(tl1, tc1 ,tabu, pontos):
    tem = VAZIO_SEM_ESPACO
    if tc1 == NUMERO_DICA and tl1 == NUMERO_DICA:
+       pontos -= 1
        for i in range(len(tabu)):
            if tem == SIM:
                break
@@ -244,7 +270,7 @@ def dicas(tl1, tc1 ,tabu):
                                print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l)
                                tem += SIM
                                break
-                           elif j >= MARGEM_PECA_ATRAS and (tabu[i][j - 2]) in peca_l :
+                           elif j >= MARGEM_PECA_ATRAS and (tabu[i][j - 2]) in peca_l:
                                duas_pessas_l.append([i, j -1])
                                duas_pessas_l.append([i, j -2])
                                print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l)
@@ -266,25 +292,13 @@ def dicas(tl1, tc1 ,tabu):
                                tem += SIM
                                break
        else:
-           print(NAO_HA_DISPONIVEIS)
+           print(NAO_HA_DICAS_DISPONIVEIS)
            tem += SIM
-           continuar = input("Voce quer continuar?")
+           continuar = input(CONTINUAR)
            if continuar == NAO:
                 tem = NAO
-   return tem
 
-'''    while len(num_linhas_colunas) != TAMANHO_ENTRADA:
-        print('Entrada Inválida')
-        num_linhas_colunas = input('Números de linhas e colunas: ')
+   return tem, pontos
 
-    linha, coluna =  num_linhas_colunas.split(" ")
-    while linha.isdigit() == False or coluna.isdigit() == False:
-        print('Insira apenas números')
-        linha, coluna = input('Números de linhas e colunas: ').split(" ")
-    linha = int(linha)
-    coluna = int(coluna)
-    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha == 0 or coluna == 0):
-        print("Insira um numero de 1 a 10")
-        linha, coluna =  input('Números de linhas e colunas: ').split(" ")
 
-    return linha, coluna'''
+
