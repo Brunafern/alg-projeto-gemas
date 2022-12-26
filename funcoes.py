@@ -3,7 +3,7 @@ from constantes import *
 
 
 
-def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
+def validar_linhas_colunas(num_linhas_colunas):
     while len(num_linhas_colunas) != TAMANHO_ENTRADA and len(num_linhas_colunas) != TAMANHO_ENTRADA +1:
         print(ENTRADA_INVALIDA )
         num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
