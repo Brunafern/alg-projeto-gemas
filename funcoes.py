@@ -4,7 +4,7 @@ from constantes import *
 
 
 def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem que ser >=5
-    while len(num_linhas_colunas) != TAMANHO_ENTRADA and len(num_linhas_colunas) != TAMANHO_ENTRADA +1:
+    while len(num_linhas_colunas) != TAMANHO_ENTRADA or len(num_linhas_colunas) > TAMANHO_ENTRADA +1:
         print(ENTRADA_INVALIDA )
         num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
 
@@ -12,12 +12,10 @@ def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
     coluna = num_linhas_colunas
     while linha.isdigit() == False or coluna.isdigit() == False:
         print(ERRO_INSIRA_NUMEROS)
-        num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
-        linha = num_linhas_colunas
-        coluna = num_linhas_colunas
+        num_linhas_colunas = int(input(NUMERO_LINHASECOLUNAS))
     linha = int(num_linhas_colunas)
     coluna = int(num_linhas_colunas)
-    while (linha >= MAIOR_ENTRADA_POSSIVEL or coluna >= MAIOR_ENTRADA_POSSIVEL) or (linha < MENOR_ENTRADA_POSIVEL or coluna < MENOR_ENTRADA_POSIVEL):
+    while (linha > MAIOR_ENTRADA_POSSIVEL or coluna > MAIOR_ENTRADA_POSSIVEL) or (linha < MENOR_ENTRADA_POSIVEL or coluna < MENOR_ENTRADA_POSIVEL):
         print(ERRO_INTERVALO)
         num_linhas_colunas = input(NUMERO_LINHASECOLUNAS)
         linha = int(num_linhas_colunas)
@@ -26,8 +24,6 @@ def validar_linhas_colunas(num_linhas_colunas): # Soma de linhas e colunas tem q
     coluna = int(num_linhas_colunas)
 
     return linha, coluna
-
-
 def validar_cores(quant_cores):
     while  True:
         if quant_cores.isdigit() == False:
@@ -36,7 +32,7 @@ def validar_cores(quant_cores):
            continue
         else:
             quant_cores = int(quant_cores)
-            if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores >= MAIOR_QUANTIDADE_CORES_POSSIVEL:
+            if quant_cores < MENOR_QUANTIDADE_CORES_POSSIVEL or quant_cores > MAIOR_QUANTIDADE_CORES_POSSIVEL:
                 print(ENTRADA_INVALIDA_INSIRA_NUMEROS)
                 quant_cores = input(NUMERO_CORES)
                 continue
@@ -44,42 +40,32 @@ def validar_cores(quant_cores):
                   break
 
     return(quant_cores)
-
-
 def validar_troca_posicoes(posicoes1, tabu, posicoes_vezes ):
-    if posicoes1 == ENTRADA_DICA:
-        posicoes1.split(VAZIO)
-        l1 = NUMERO_DICA
-        c1 = NUMERO_DICA
+    if posicoes1 == '100 100':
+        posicoes1.split(' ')
+        l1 = 100
+        c1 = 100
         return l1, c1, posicoes_vezes
     else:
-        while True:
-          if len(posicoes1) != TAMANHO_ENTRADA_POSICOES or VAZIO not in posicoes1:
+        while len(posicoes1) != TAMANHO_ENTRADA_POSICOES and VAZIO not in posicoes1:
             print(ENTRADA_INVALIDA )
             posicoes1 = input(INSIRA_NOVAMENTE_)
-            continue
-          l1, c1 = posicoes1.split(VAZIO)
-          if l1.isdigit() == False or c1.isdigit() == False:
-                print(ERRO_INSIRA_NUMEROS)
-                posicoes1 = input(INSIRA_NOVAMENTE_)
-                continue
-          l1 = int(l1)
-          c1 = int(c1)
-          if  l1 > len(tabu) or c1 > len(tabu) :
-              print(CORDENADA_FORA_TABLEIRO)
-              posicoes1 = input(INSIRA_NOVAMENTE_)
-              continue
-          posicoes_vezes += 1
-          return l1, c1, posicoes_vezes
+        l1, c1 = posicoes1.split(VAZIO)
+        while l1.isdigit() == False or c1.isdigit() == False:
+            print(ERRO_INSIRA_NUMEROS)
+            l1, c1 = input(INSIRA_NOVAMENTE_).split(VAZIO)
+        l1 = int(l1)
+        c1 = int(c1)
+        while (0 > l1 > len(tabu) or 0 > c1 > len(tabu)) :
+            print(CORDENADA_FORA_TABLEIRO)
+            l1, c1 = input(INSIRA_NOVAMENTE_).split(VAZIO)
+        posicoes_vezes += 1
+
+        return l1, c1, posicoes_vezes
+
 
 
 def criar_tabuleiro(num_linhas,num_colunas):
-    '''
-
-    -param num_linhas: Número de linhas
-    -param num_colunas: Número de colunas
-    -return: Cria uma matriz (Tabuleiro)
-    '''
     tabuleiro = []
     for l in range(0,num_linhas):
         linha = []
@@ -89,63 +75,38 @@ def criar_tabuleiro(num_linhas,num_colunas):
 
     return tabuleiro
 
-
 def inicar():
     print(JOGO_INICIO)
 
-
-def printar_tabuleiro(tabu,coluna):
-    '''
-    -param tabu: Matriz (Tabuleiro)
-    -param coluna: Número de colunas
-    -return: Tabuleiro montado
-    '''
+def printar_tabuleiro(n,coluna):
     quant_c = ['','','',''] # Ajusta os números superiores
     for i in range(0,coluna):
         quant_c.append(i)
-    for l in range(len(tabu)):
+    for l in range(len(n)):
         if l == 0:
             print(*quant_c,'\n'
                   '  +'+('--'*coluna)+'-+')
-        for c in range(len(tabu[l])):
+        for c in range(len(n[l])):
             if c == 0:
-                print(f'{l} | '+tabu[l][c], end=' ') # Números laterais
-            elif c == len(tabu[l]) -1:
-                print(tabu[l][c], end=' |')
+                print(f'{l} | '+n[l][c], end=' ') # Números laterais
+            elif c == len(n[l]) -1:
+                print(n[l][c], end=' |')
             else:
-                print(tabu[l][c], end=' ')
+                print(n[l][c], end=' ')
         print()
-        if l == len(tabu) -1:
+        if l == len(n) -1:
             print('  +'+('--'*coluna)+'-+')
 
-    return tabu
+    return n
 
-
-def completar_tabuleiro(tabu,cor):
-    '''
-
-    -param tabu: Matriz (Tabuleiro)
-    -param cor: Números de cores a ser inserido no tabuleiro
-    -return: Tabuleiro com as gemas inseridas
-    '''
-    for l in range(len(tabu)):
-        for c in range(len(tabu[l])):
-            if tabu[l][c] == VAZIO:
+def completar_tabuleiro(t,cor):
+    for l in range(len(t)):
+        for c in range(len(t[l])):
+            if t[l][c] == VAZIO:
                 r = random.randrange(0, cor) # Gera um indice aleatório para a lista cores
-                tabu[l][c] = CORES[r]
-    return tabu
-
-
+                t[l][c] = CORES[r]
+    return t
 def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
-    '''
-
-    -param num_linha_1: Indice linha da gema um
-    -param num_coluna_1: Indice coluna da gema um
-    -param num_linha_2: Indice linha da gema dois
-    -param num_coluna_2: Indice coluna da gema dois
-    -param tabu: Matriz (Tabuleiro)
-    -return:
-    '''
     gema_1 = tabu[num_linha_1][num_coluna_1]
     gema_2 = tabu[num_linha_2][num_coluna_2]
     if (num_coluna_2 == num_coluna_1 and num_linha_2 == num_linha_1 + 1 or  num_linha_2 == num_linha_1 -1) or (num_linha_2 == num_linha_1 and num_coluna_2 == num_coluna_1 + 1 or  num_coluna_2 == num_coluna_1 -1):
@@ -157,13 +118,7 @@ def trocar_posicao(num_linha_1,num_coluna_1,num_linha_2,num_coluna_2,tabu):
         print(NAO_FAZER_ESSE_MOVIMENTO)
         return False
 
-
 def identificar_gemas_linha(tabu):
-    '''
-
-    -param tabu: Matriz (Tabuleiro)
-    -return: Indices da cadeia de gemas a serem eliminadas na linha
-    '''
     indice_remove_l = []
     for l in range(len(tabu)):
         linha = []
@@ -195,12 +150,8 @@ def identificar_gemas_linha(tabu):
     return indice_remove_l
 
 
-def identificar_gemas_colunas(tabu):
-    '''
 
-    -param tabu: Matriz (Tabuleiro)
-    -return: Indices da cadeia de gemas a serem eliminadas na coluna
-    '''
+def identificar_gemas_colunas(tabu):
     indice_remove_c = []
     for l in range(len(tabu)):
         linha = []
@@ -229,15 +180,7 @@ def identificar_gemas_colunas(tabu):
                 indice_r = []
     return indice_remove_c
 
-
 def power_ups(linha,coluna,tabu):
-    '''
-
-    -param linha: Indices da função indentificar_gemas_linha
-    -param coluna: Indices da função indentificar_gemas_colunas
-    -param tabu: Matriz (Tabuleiro)
-    -return: Indices das gemas a serem eliminadas de acordo com o power ip especifico
-    '''
     p_5 = '0'
     indice_linha = []
     indice_coluna = []
@@ -254,19 +197,7 @@ def power_ups(linha,coluna,tabu):
 
     return indice_linha,indice_coluna,p_5
 
-
 def eliminar_gemas(l,c,tabu,p_l,p_c,p_5, pontos):
-    '''
-
-    -param l: Indices da função indentificar_gemas_linha
-    -param c: Indices da função indentificar_gemas_colunas
-    -param tabu: Matriz (Tabuleiro)
-    -param p_l: Indices linhas da função power_ups
-    -param p_c: Indices da colunas da função power_ups
-    -param p_5: Indices das gemas da função power_ups
-    -param pontos: soma das gemas eliminadas
-    -return: Tabuleiro e pontos
-    '''
     pontos += len(c) + len(l)
     for i in range(len(l)):
         tabu[l[i][0]][l[i][1]] = VAZIO
@@ -286,13 +217,7 @@ def eliminar_gemas(l,c,tabu,p_l,p_c,p_5, pontos):
                     tabu[l][c] = VAZIO
     return tabu, pontos
 
-
 def deslocar_gema(tabu):
-    '''
-
-    -param tabu: Matriz (Tabuleiro)
-    -return: Tabuleiro com as gemas caidas
-    '''
 
     for l in range(len(tabu)):
         indice_vazio = []
@@ -324,12 +249,7 @@ def deslocar_gema(tabu):
 
     return tabu
 
-
-def dicas(tl1, tc1 , tabu, pontos):
-    #tl1 e tc1: verificam se a entrada é igual ao numero da dica
-    #tabu: verificar possiveis cadeias no tabuleiro
-    #pontos= se o usuario pedir uma dica, perde um ponto
-
+def dicas(tl1, tc1 ,tabu, pontos):
    tem = VAZIO_SEM_ESPACO
    if tc1 == NUMERO_DICA and tl1 == NUMERO_DICA:
        pontos -= 1
@@ -347,13 +267,13 @@ def dicas(tl1, tc1 , tabu, pontos):
                            if  j < len(tabu)-3 and (tabu[i][j + 3]) in peca_l :
                                duas_pessas_l.append([i, j+2])
                                duas_pessas_l.append([i, j +3])
-                               print('\n',AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l, '\n')
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l)
                                tem += SIM
                                break
                            elif j >= MARGEM_PECA_ATRAS and (tabu[i][j - 2]) in peca_l:
                                duas_pessas_l.append([i, j -1])
                                duas_pessas_l.append([i, j -2])
-                               print('\n',AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l, '\n')
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_l)
                                tem += SIM
                                break
 
@@ -362,13 +282,13 @@ def dicas(tl1, tc1 , tabu, pontos):
                            if  j < len(tabu)-3 and (tabu[j+3][i]) in peca_c:
                                duas_pessas_c.append([j+2,i])
                                duas_pessas_c.append([j +3, i])
-                               print('\n',AINDA_JOGADAS_DISPONIVEIS, duas_pessas_c ,'\n')
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_c)
                                tem += SIM
                                break
                            elif j >= MARGEM_PECA_ATRAS and (tabu[j - 2][i]) in peca_c:
                                duas_pessas_c.append([ j -1, i])
                                duas_pessas_c.append([j -2, i])
-                               print('\n',AINDA_JOGADAS_DISPONIVEIS, duas_pessas_c, '\n')
+                               print(AINDA_JOGADAS_DISPONIVEIS, duas_pessas_c)
                                tem += SIM
                                break
        else:
@@ -379,4 +299,6 @@ def dicas(tl1, tc1 , tabu, pontos):
                 tem = NAO
 
    return tem, pontos
+
+
 
