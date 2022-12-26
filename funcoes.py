@@ -267,12 +267,12 @@ def eliminar_gemas(l,c,tabu,p_l,p_c,p_5, pontos):
         tabu[c[j][0]][c[j][1]] = VAZIO
 
     if len(p_l) > 0:
-        pontos -= 4
+        pontos -= POWER_UP_4
         pontos += len(p_l)
         for i in range(len(p_l)):
             tabu[p_l[i][0]][p_l[i][1]] = VAZIO
     if len(p_c) > 0:
-        pontos -= 4
+        pontos -= POWER_UP_4
         pontos += len(p_c)
         for j in range(len(p_c)):
             tabu[p_c[j][0]][p_c[j][1]] = VAZIO
@@ -281,7 +281,7 @@ def eliminar_gemas(l,c,tabu,p_l,p_c,p_5, pontos):
             for c in range(len(tabu[l])):
                 if tabu[l][c] == p_5:
                     tabu[l][c] = VAZIO
-                    pontos += 1
+                    pontos += UM_PONTO
     return tabu, pontos
 
 

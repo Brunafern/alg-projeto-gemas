@@ -14,6 +14,7 @@ AINDA_JOGADAS_DISPONIVEIS = 'Ainda há jogadas disponiveis nas casas'
 NAO_FAZER_ESSE_MOVIMENTO = 'Voce não pode fazer esse movimento'
 POWER_UP_5 = 5
 POWER_UP_4 = 4
+UM_PONTO = 1
 MARGEM_PECA_ATRAS = 2
 MARGEM_PECA_FRENTE = 4
 MARGEM_TABULEIRO = 6
