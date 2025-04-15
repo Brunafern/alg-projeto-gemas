@@ -1,1 +1,1 @@
-# alg-projeto-gemas
+Projeto Gemas, realizado na disciplina de Algoritmos
